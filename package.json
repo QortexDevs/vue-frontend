@@ -1,0 +1,23 @@
+{
+    "name": "vuejs-frontend",
+    "version": "1.0.0",
+    "description": "VueJS template frontend",
+    "main": "src/main.js",
+    "repository": "https://github.com/NickMitin/vuejs-frontend.git",
+    "author": "Qortex",
+    "license": "MIT",
+    "private": false,
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "serve": "vite preview"
+      },
+      "dependencies": {
+        "vue": "^3.0.5"
+      },
+      "devDependencies": {
+        "@vitejs/plugin-vue": "^1.2.5",
+        "@vue/compiler-sfc": "^3.0.5",
+        "vite": "^2.4.3"
+      }
+}
