@@ -11,13 +11,23 @@
         "dev": "vite --host 0.0.0.0",
         "build": "vite build",
         "serve": "vite preview"
-      },
-      "dependencies": {
-        "vue": "^3.0.5"
-      },
-      "devDependencies": {
-        "@vitejs/plugin-vue": "^1.2.5",
-        "@vue/compiler-sfc": "^3.0.5",
-        "vite": "^2.4.3"
-      }
+    },
+    "dependencies": {
+        "@gtm-support/vue-gtm": "^1.6.0",
+        "vue3-yandex-metrika": "^0.0.3",
+        "vue": "^3.2.37",
+        "vue-router": "^4.1.2",
+        "vue3-observe-visibility": "^0.1.2",
+        "vuex": "^4.0.2",
+        "mobile-detect": "^1.4.5"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^2.3.3",
+        "sass": "^1.53.0",
+        "sass-loader": "^13.0.2",
+        "vite": "^2.9.14",
+        "imagemin": "^7.0.1",
+        "imagemin-pngquant": "^9.0.2",
+        "imagemin-jpegtran": "^7.0.0"
+    }
 }

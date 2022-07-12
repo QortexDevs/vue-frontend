@@ -1,22 +1,71 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3" />
+    <router-view />
 </template>
 
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
+<script>
+import { mapActions, mapGetters } from 'vuex'
 
-// This starter template is using Vue 3 experimental <script setup> SFCs
-// Check out https://github.com/vuejs/rfcs/blob/master/active-rfcs/0040-script-setup.md
+export default {
+    name: 'app',
+
+    data() {
+        return {
+            online: true,
+            end: false,
+        }
+    },
+
+    created() {
+        if (navigator.onLine) {
+            this.online = true
+        } else {
+            this.online = false
+        }
+
+        window.addEventListener('online', () => {
+            this.online = true
+        })
+
+        window.addEventListener('offline', () => {
+            this.online = false
+        })
+
+        this.userId = this.getUserIdFromHash()
+
+        if (!this.userId) {
+            this.userId = window.localStorage.getItem("userId")
+        }
+
+        if (this.userId) {
+            this.$store.dispatch("participants/setId", this.userId)
+        }
+
+        this.userId = this.getUserIdFromHash()
+        this["participants/init"](this.userId)
+    },
+
+    methods: {
+        ...mapActions([
+            'participants/init',
+            'participants/setId'
+        ]),
+
+        reloadPage() {
+            location.reload()
+        },
+
+        getUserIdFromHash() {
+            const re = /user_id=(.+)$/i
+            const location = window.location.hash.toString()
+            const userData = location.match(re)
+            if (userData) {
+                return userData[1]
+            }
+            return null;
+        },
+    }
+}
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>

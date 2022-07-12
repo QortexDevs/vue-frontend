@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:18.5.0
 ARG DOMAIN_NAME=example.com
 WORKDIR /app
 COPY ./package.json ./
