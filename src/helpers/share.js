@@ -4,49 +4,59 @@ export function share (
   description = '',
   imageUrl = '',
   imageName = '',
-  callback = null
+  callback = null,
+  use_share_images = false
 ) {
   if (typeof Android !== 'undefined' && Android.shareData) {
     Android.shareData(title, description, imageUrl, url)
+    console.log('android')
     return 'android'
   } else if (navigator.share) {
-    if (imageUrl) {
-      fetch(imageUrl).then(response => {
+    console.log('generic')
+    if (imageUrl && use_share_images && false) {
+      fetch(imageUrl, { mode: 'no-cors' }).then(response => {
         response.blob().then(blob => {
           const file = new File([blob], imageName, {
-            type: 'image/png'
+            type: 'image/jpeg',
+            lastModified: new Date().getTime()
           })
-          navigator
+          text = navigator
             .share({
-              url: url,
-              title: title,
-              text: description,
+              text: description + '\n' + url,
               files: [file]
             })
             .then(success => {
+              console.log('with image success')
+              console.log(success)
               callback(true)
             })
             .catch(error => {
+              console.log('with image error')
+              console.log(error)
               callback(true)
             })
         })
       })
     } else {
+      console.log('generic without picture')
       navigator
         .share({
-          url: url,
-          title: title,
-          text: description
+          text: description + '\n' + url
         })
         .then(success => {
+          console.log('without image success')
+          console.log(success)
           callback(true)
         })
         .catch(error => {
+          console.log('without image success')
+          console.log(success)
           callback(true)
         })
     }
     return 'generic'
   } else {
+    console.log('clipboard')
     copyShareLinkToClipboard(url, title, description, callback)
     return 'clipboard'
   }
@@ -94,17 +104,21 @@ function destroyTemporaryTextArea (textArea) {
 }
 
 function copyShareLinkToClipboard (url, title, description, callback) {
-  let shareText = '';
+  let shareText = ''
   if (title && title !== '') {
-    shareText += title + "\n"
+    shareText += title + '\n'
   }
   if (description && description !== '') {
-    shareText += description + "\n"
+    shareText += description + '\n'
   }
   shareText += url
-  const textArea = createTemporaryTextArea(shareText)
-  copyTextAreaValue(textArea, callback)
-  destroyTemporaryTextArea(textArea)
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(shareText)
+  } else {
+    const textArea = createTemporaryTextArea(shareText)
+    copyTextAreaValue(textArea, callback)
+    destroyTemporaryTextArea(textArea)
+  }
 }
 
 function detectiOS () {
